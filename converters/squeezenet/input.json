@@ -1,6 +1,6 @@
 {
-	"model": "model/squeezenet1_1-f364aa15.pth/",
+	"model": "model/squeezenet_pytorch.pt",
 	"model_type": "pytorch",
 	"output_onnx_path": "output/Olive_pytorch-onnx.onnx",
-	"model_input_shapes": "(1,1,28,28)"
+	"model_input_shapes": "(1,3,28,28)"
 }
