@@ -36,4 +36,4 @@ mxnet==1.6.0
 
 onnx
 onnxmltools
-onnxruntime
+onnxruntime-gpu
