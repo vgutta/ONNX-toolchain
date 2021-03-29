@@ -13,6 +13,11 @@ from torchvision import transforms
 dummy_input = torch.randn(1, 3, 227, 227)
 squeezenet = models.squeezenet1_1(pretrained=True) ## downloads pretrained model
 
+input_names = [ "actual_input_1" ] + [ "learned_%d" % i for i in range(16) ]
+output_names = [ "output1" ]
+
+torch.onnx.export(squeezenet, dummy_input, "../output/squeezenet.onnx", verbose=True, input_names=input_names, output_names=output_names)
+
 transform = transforms.Compose([            #[1]
  transforms.Resize(256),                    #[2]
  transforms.CenterCrop(224),                #[3]
