@@ -13,8 +13,9 @@ from sklearn import datasets, __version__ as skl_version
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
+from time import time
 
-logistic = LogisticRegression()
+logistic = LogisticRegression(solver='sag', n_jobs=-1)
 pca = PCA()
 pipe = Pipeline(steps=[('pca', pca), ('logistic', logistic)])
 
@@ -22,7 +23,14 @@ digits = datasets.load_digits()
 X_digits = digits.data[:1000]
 y_digits = digits.target[:1000]
 
+start = time()
+
 pipe.fit(X_digits, y_digits)
+
+end = time()
+
+result = end - start
+print('%.3f seconds' % result)
 
 initial_types = [('input', FloatTensorType((None, X_digits.shape[1])))]
 model_onnx = convert_sklearn(pipe, initial_types=initial_types,
