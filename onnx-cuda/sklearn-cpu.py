@@ -1,10 +1,10 @@
-import onnxruntime as ort
-import onnx
+#import onnxruntime as ort
+#import onnx
 import numpy
 from skl2onnx.helpers import collect_intermediate_steps, compare_objects
 from timeit import timeit
-import onnxruntime as rt
-from onnxconverter_common.data_types import FloatTensorType
+#import onnxruntime as rt
+#from onnxconverter_common.data_types import FloatTensorType
 from skl2onnx import convert_sklearn, __version__
 import numpy as np
 import pandas as pd
@@ -15,7 +15,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from time import time
 
-logistic = LogisticRegression(solver='sag', n_jobs=-1)
+logistic = LogisticRegression(solver='sag', n_jobs=2)
 pca = PCA()
 pipe = Pipeline(steps=[('pca', pca), ('logistic', logistic)])
 
@@ -32,6 +32,7 @@ end = time()
 result = end - start
 print('%.3f seconds' % result)
 
+'''
 initial_types = [('input', FloatTensorType((None, X_digits.shape[1])))]
 model_onnx = convert_sklearn(pipe, initial_types=initial_types,
                              target_opset=12)
@@ -49,3 +50,4 @@ print(timeit("pipe.predict_proba(X_digits[:1])",
 print("onnxruntime")
 print(timeit("sess.run(None, {'input': X_digits[:1].astype(np.float32)})[1]",
              number=10000, globals=globals()))
+'''
