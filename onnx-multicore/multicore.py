@@ -3,6 +3,7 @@ import onnx
 import numpy
 from skl2onnx.helpers import collect_intermediate_steps, compare_objects
 from timeit import timeit
+from time import time
 import onnxruntime as rt
 from onnxconverter_common.data_types import FloatTensorType
 from skl2onnx import convert_sklearn, __version__
@@ -31,14 +32,26 @@ initial_types = [('input', FloatTensorType((None, X_digits.shape[1])))]
 model_onnx = convert_sklearn(pipe, initial_types=initial_types,
                              target_opset=12)
 
-sess = rt.InferenceSession(model_onnx.SerializeToString())
+################ ONNX Session opts
+
+opts = rt.SessionOptions()
+opts.enable_profiling = True
+opts.intra_op_num_threads = 8
+opts.inter_op_num_threads = 1
+opts.execution_mode = rt.ExecutionMode.ORT_SEQUENTIAL
+
+################
+
+sess = rt.InferenceSession(model_onnx.SerializeToString(), sess_options=opts, providers=['CPUExecutionProvider'])
 print("skl predict_proba")
 print(pipe.predict_proba(X_digits[:2]))
+start = time()
 onx_pred = sess.run(None, {'input': X_digits[:2].astype(np.float32)})[1]
+end = time()
 df = pd.DataFrame(onx_pred)
 print("onnx predict_proba")
 print(df.values)
-
+print("Time", end-start)
 
 
 
