@@ -36,7 +36,7 @@ model_onnx = convert_sklearn(pipe, initial_types=initial_types,
 
 opts = rt.SessionOptions()
 opts.enable_profiling = True
-opts.intra_op_num_threads = 8
+opts.intra_op_num_threads = 2
 opts.inter_op_num_threads = 1
 opts.execution_mode = rt.ExecutionMode.ORT_SEQUENTIAL
 
