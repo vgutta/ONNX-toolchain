@@ -33,12 +33,13 @@ model_onnx = convert_sklearn(pipe, initial_types=initial_types,
                              target_opset=12)
 
 ################ ONNX Session opts
+# https://www.onnxruntime.ai/docs/how-to/tune-performance.html
 
 opts = rt.SessionOptions()
 opts.enable_profiling = True
 opts.intra_op_num_threads = 2
-opts.inter_op_num_threads = 1
-opts.execution_mode = rt.ExecutionMode.ORT_SEQUENTIAL
+opts.inter_op_num_threads = 2
+opts.execution_mode = rt.ExecutionMode.ORT_PARALLEL
 
 ################
 
